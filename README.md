@@ -1,2 +1,2 @@
 # poke-fantasia
-Final project monorepo for Northwestern CS310: Scalable Software Architectures
+Final project monorepo for CS_310 Scalable Software Architectures
