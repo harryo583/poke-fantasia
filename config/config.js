@@ -1,0 +1,1 @@
+// Stores configuration variables such as AWS credentials and S3 bucket names.

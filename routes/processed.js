@@ -1,0 +1,1 @@
+// Handles the display of the processed image
