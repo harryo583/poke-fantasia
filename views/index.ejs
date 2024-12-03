@@ -1,1 +1,24 @@
 <!-- The main page template -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Poke Fantasia</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Upload an Image for Processing</h1>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <label for="image">Choose an image:</label><br>
+    <input type="file" name="image" id="image" accept="image/*" required><br><br>
+
+    <label for="option">Choose an option:</label><br>
+    <input type="radio" name="option" value="option1" required> Option 1<br>
+    <input type="radio" name="option" value="option2" required> Option 2<br>
+    <input type="radio" name="option" value="option3" required> Option 3<br><br>
+
+    <button type="submit">Upload and Process</button>
+  </form>
+</body>
+</html>

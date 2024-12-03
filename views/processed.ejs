@@ -1,1 +1,16 @@
 <!-- Template for displaying the processed image. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Processed Image</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Your Processed Image</h1>
+  <img src="<%= imageUrl %>" alt="Processed Image" style="max-width: 100%; height: auto;"><br><br>
+  <a href="<%= imageUrl %>" download>Download Image</a><br><br>
+  <a href="/">Process Another Image</a>
+</body>
+</html>
