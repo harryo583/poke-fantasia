@@ -13,7 +13,9 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Create an S3 service object
-const s3 = new S3(config.aws);
+// const s3 = new S3(config.aws);
+const s3 = new S3(config.awsReadWrite);
+
 
 router.post("/", upload.single("image"), async (req, res) => {
   const { option } = req.body;
@@ -30,7 +32,6 @@ router.post("/", upload.single("image"), async (req, res) => {
     let folderName;
     switch (option) {
       case "classify":
-        console.log('1')
         folderName = config.s3.folderOption1;
         break;
       case "transform":
