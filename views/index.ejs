@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Poke Fantasia</title>
     <style>
+      /* Existing styles */
       * {
         margin: 0;
         padding: 0;
@@ -72,7 +73,7 @@
         font-weight: bold;
         margin-bottom: 5px;
         color: #fff;
-        text-align: left;
+        text-align: center;
       }
 
       input,
@@ -111,6 +112,10 @@
         background: linear-gradient(90deg, #ff8c00, #ff0080);
         transform: scale(1.05);
       }
+
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -127,15 +132,75 @@
         <input type="file" name="image" id="image" accept="image/*" required />
 
         <label for="option">Choose an option below...</label>
-        <select name="option" id="option" required>
+        <select
+          name="option"
+          id="option"
+          required
+          onchange="handleOptionChange()"
+        >
           <option value="" disabled selected>Select an option</option>
           <option value="option1">Classify my pokemon</option>
           <option value="option2">Transform my type</option>
           <option value="option3">Transfer image style</option>
         </select>
 
+        <div id="typeDropdown" class="hidden">
+          <label for="desiredType">Choose the desired type...</label>
+          <select name="desiredType" id="desiredType">
+            <option value="" disabled selected>Select a type</option>
+            <option value="normal">Normal</option>
+            <option value="fire">Fire</option>
+            <option value="water">Water</option>
+            <option value="electric">Electric</option>
+            <option value="grass">Grass</option>
+            <option value="ice">Ice</option>
+            <option value="fighting">Fighting</option>
+            <option value="poison">Poison</option>
+            <option value="ground">Ground</option>
+            <option value="flying">Flying</option>
+            <option value="psychic">Psychic</option>
+            <option value="bug">Bug</option>
+            <option value="rock">Rock</option>
+            <option value="ghost">Ghost</option>
+            <option value="dragon">Dragon</option>
+            <option value="dark">Dark</option>
+            <option value="steel">Steel</option>
+            <option value="fairy">Fairy</option>
+          </select>
+        </div>
+
+        <div id="styleDropdown" class="hidden">
+          <label for="desiredStyle">Choose the desired style...</label>
+          <select name="desiredStyle" id="desiredStyle">
+            <option value="" disabled selected>Select a style</option>
+            <option value="cartoon">Cartoon</option>
+            <option value="realistic">Realistic</option>
+            <option value="watercolor">Watercolor</option>
+            <option value="pixelart">Pixel Art</option>
+          </select>
+        </div>
+
         <button type="submit">Upload and Process</button>
       </form>
     </div>
+
+    <script>
+      function handleOptionChange() {
+        const option = document.getElementById("option").value;
+        const typeDropdown = document.getElementById("typeDropdown");
+        const styleDropdown = document.getElementById("styleDropdown");
+
+        // Hide both dropdowns by default
+        typeDropdown.classList.add("hidden");
+        styleDropdown.classList.add("hidden");
+
+        // Show the appropriate dropdown based on selection
+        if (option === "option2") {
+          typeDropdown.classList.remove("hidden");
+        } else if (option === "option3") {
+          styleDropdown.classList.remove("hidden");
+        }
+      }
+    </script>
   </body>
 </html>
