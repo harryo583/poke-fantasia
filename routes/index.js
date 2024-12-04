@@ -1,6 +1,4 @@
-
-// Handles the root route (/).
-// Renders the main page where users can upload images and select options.
+// /routes/index.js
 
 const express = require('express');
 const router = express.Router();
