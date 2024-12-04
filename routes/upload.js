@@ -47,7 +47,6 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 
   try {
-    // Determine the folder based on the selected option
     let folderName;
     switch (option) {
       case "classify":
@@ -82,7 +81,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     const uploadS3 = new Upload({
       client: s3,
       params,
-      // Optionally, you can add more configurations like queueSize, partSize, etc.
+      // Optionally add more configurations like queueSize, partSize, etc.
     });
 
     // Monitor upload progress (optional)
@@ -106,7 +105,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   } catch (err) {
     console.error("Error processing upload:", err);
 
-    // Handle specific AWS S3 errors
+    // Specific AWS S3 errors
     if (err.name === "AccessDenied") {
       return res.status(403).render("error", {
         message:
@@ -114,14 +113,14 @@ router.post("/", upload.single("image"), async (req, res) => {
       });
     }
 
-    // Handle Multer errors
+    // Multer errors
     if (err instanceof multer.MulterError) {
       return res.status(400).render("error", {
         message: err.message,
       });
     }
 
-    // Handle generic errors
+    // Generic errors
     res.status(500).render("error", {
       message: "An error occurred while processing your image.",
     });
