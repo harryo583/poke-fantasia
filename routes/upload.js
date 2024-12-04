@@ -3,21 +3,19 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const AWS = require("aws-sdk");
+const { S3 } = require("@aws-sdk/client-s3");
+const { Upload } = require("@aws-sdk/lib-storage");
 const path = require("path");
 const config = require("../config/config");
-
-// Configure AWS SDK with your credentials and region
-AWS.config.update(config.aws);
 
 // Configure Multer storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Create an S3 service object
-const s3 = new AWS.S3();
+const s3 = new S3(config.aws);
 
-router.post("/", upload.single("image"), (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   const { option } = req.body;
   const image = req.file;
 
@@ -31,13 +29,14 @@ router.post("/", upload.single("image"), (req, res) => {
     // Determine the folder based on the selected option
     let folderName;
     switch (option) {
-      case "option1":
+      case "classify":
+        console.log('1')
         folderName = config.s3.folderOption1;
         break;
-      case "option2":
+      case "transform":
         folderName = config.s3.folderOption2;
         break;
-      case "option3":
+      case "transfer":
         folderName = config.s3.folderOption3;
         break;
       default:
@@ -48,37 +47,32 @@ router.post("/", upload.single("image"), (req, res) => {
 
     const bucketName = config.s3.bucketName;
 
-    // Upload the image to the appropriate folder in the S3 bucket
+    // Prepare the parameters for S3 upload
     const params = {
       Bucket: bucketName,
-      Key: folderName + image.originalname,
+      Key: `${folderName}/${image.originalname}`,
       Body: image.buffer,
       ContentType: image.mimetype,
     };
 
-    s3.upload(params, (err, data) => {
-      if (err) {
-        console.error("Error uploading image to S3:", err);
-        return res.status(500).render("error", {
-          message: "An error occurred while uploading the image to S3.",
-        });
-      }
+    // Upload the image to S3
+    const upload = new Upload({
+      client: s3,
+      params,
+    });
 
-      console.log(`Image uploaded successfully to ${bucketName}/${folderName}`);
+    const result = await upload.done();
+    console.log(`Image uploaded successfully to ${result.Location}`);
 
-      // Since the Lambda function is triggered by the S3 upload event,
-      // we don't need to invoke it directly.
-
-      // Inform the user that their image is being processed
-      res.render("processing", {
-        message: "Your image is being processed. This may take a few moments.",
-        imageName: image.originalname,
-        folderName: folderName,
-        bucketName: bucketName,
-      });
+    // Inform the user that their image is being processed
+    res.render("processing", {
+      message: "Your image is being processed. This may take a few moments.",
+      imageName: image.originalname,
+      folderName: folderName,
+      bucketName: bucketName,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error processing upload:", err);
     res.status(500).render("error", {
       message: "An error occurred while processing your image.",
     });
