@@ -1,4 +1,5 @@
 // /config/config.js
+require('dotenv').config();
 
 module.exports = {
   aws: {
@@ -29,4 +30,7 @@ module.exports = {
     secretAccessKey: process.env.AWS_READWRITE_SECRET_ACCESS_KEY,
     region: "us-east-2",
   },
+  api: {
+    endpoint: "https://wjn8x8icte.execute-api.us-east-2.amazonaws.com/prod"
+  }
 };
