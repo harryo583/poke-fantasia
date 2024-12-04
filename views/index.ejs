@@ -138,9 +138,9 @@
           onchange="handleOptionChange()"
         >
           <option value="" disabled selected>Select an option</option>
-          <option value="option1">Classify my pokemon</option>
-          <option value="option2">Transform my type</option>
-          <option value="option3">Transfer image style</option>
+          <option value="classify">Classify my pokemon</option>
+          <option value="transform">Transform my type</option>
+          <option value="transfer">Transfer image style</option>
         </select>
 
         <div id="typeDropdown" class="hidden">
@@ -172,20 +172,14 @@
           <label for="desiredStyle">Choose the desired style...</label>
           <select name="desiredStyle" id="desiredStyle">
             <option value="" disabled selected>Select a style</option>
-            <option value="cartoon">Cartoon</option>
             <option value="realistic">Realistic</option>
-            <option value="watercolor">Watercolor</option>
             <option value="pixelart">Pixel Art</option>
             <option value="sketch">Sketch</option>
             <option value="oilpainting">Oil Painting</option>
-            <option value="lineart">Line Art</option>
             <option value="comic">Comic</option>
             <option value="abstract">Abstract</option>
-            <option value="3dmodeling">3D Modeling</option>
             <option value="pastel">Pastel</option>
             <option value="charcoal">Charcoal</option>
-            <option value="anime">Anime</option>
-            <option value="popart">Pop Art</option>
             <option value="vintage">Vintage</option>
             <option value="impressionist">Impressionist</option>
           </select>
@@ -206,9 +200,9 @@
         styleDropdown.classList.add("hidden");
 
         // Show the appropriate dropdown based on selection
-        if (option === "option2") {
+        if (option === "transform") {
           typeDropdown.classList.remove("hidden");
-        } else if (option === "option3") {
+        } else if (option === "transfer") {
           styleDropdown.classList.remove("hidden");
         }
       }
