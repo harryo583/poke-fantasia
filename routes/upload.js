@@ -18,7 +18,11 @@ router.post("/", upload.single("image"), (req, res) => {
   }
 
   try {
-    // Your image processing code here
+
+    // TODO: Upload the image to the appropriate S3 bucket and trigger Lambda function
+    // For now, we'll simulate this by saving the image locally and rendering it
+    // Save the image to 'public/uploads' for demonstration purposes
+    
     const fs = require("fs");
     const uploadPath = path.join(__dirname, "..", "public", "uploads");
     if (!fs.existsSync(uploadPath)) {
@@ -39,11 +43,6 @@ router.post("/", upload.single("image"), (req, res) => {
       });
   }
 
-  // TODO: Upload the image to the appropriate S3 bucket and trigger Lambda function
-
-  // For now, we'll simulate this by saving the image locally and rendering it
-
-  // Save the image to 'public/uploads' for demonstration purposes
 });
 
 module.exports = router;
