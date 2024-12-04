@@ -1,16 +1,86 @@
-<!-- Template for displaying the processed image. -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Processed Image</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-  <h1>Your Processed Image</h1>
-  <img src="<%= imageUrl %>" alt="Processed Image" style="max-width: 100%; height: auto;"><br><br>
-  <a href="<%= imageUrl %>" download>Download Image</a><br><br>
-  <a href="/">Process Another Image</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Processed Image</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        min-height: 100vh; /* Ensures content fits within viewport */
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        background-size: 400% 400%;
+        animation: gradientBackground 15s ease infinite;
+        color: #fff;
+        overflow: auto; /* Allows scrolling if content exceeds viewport height */
+        padding: 20px; /* Adds spacing around content */
+      }
+
+      @keyframes gradientBackground {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-shadow: 0 0 20px #ff0080, 0 0 30px #ff0080;
+        margin-bottom: 2rem;
+      }
+
+      img {
+        max-width: 80%;
+        height: auto;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        margin-bottom: 20px; /* Adds spacing below the image */
+      }
+
+      a {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #ff0080, #ff8c00);
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+
+      a:hover {
+        background: linear-gradient(90deg, #ff8c00, #ff0080);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Your Processed Image</h1>
+    <img src="<%= imageUrl %>" alt="Processed Image" />
+    <a href="<%= imageUrl %>" download>Download Image</a>
+    <a href="/">Process Another Image</a>
+  </body>
 </html>

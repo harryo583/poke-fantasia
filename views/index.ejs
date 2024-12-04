@@ -1,90 +1,141 @@
-<!-- The main page template -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Poke Fantasia</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f9;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poke Fantasia</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    h1 {
-      text-align: center;
-      color: #333;
-    }
+      body {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e,
+          #16213e,
+          #6a046a,
+          #0f3460,
+          #1a1a2e
+        );
+        background-size: 400% 400%;
+        animation: gradientBackground 15s ease infinite;
+        color: #fff;
+      }
 
-    form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-    label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+      h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-shadow: 0 0 20px #ff0080, 0 0 30px #ff0080;
+        margin-bottom: 1.5rem;
+      }
 
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
+      p {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        font-size: 1rem; /* Adjust font size */
+        margin-bottom: 1.5rem; /* Space below paragraph */
+        max-width: 500px; /* Limit the width for readability */
+        line-height: 1.3; /* Spacing between lines */
+        text-align: justify; /* Align text to both edges */
+      }
 
-    textarea {
-      resize: none;
-    }
+      form {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 400px;
+      }
 
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+      label {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #fff;
+        text-align: left;
+      }
 
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <div>
-    <h1>Poke Fantasia</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-      <label for="image">Choose an image:</label>
-      <input type="file" name="image" id="image" accept="image/*" required>
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
 
-      <label for="description">Description:</label>
-      <p> Hello there! Hello there! Hello there! Hello there! </p>
+      input,
+      select {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        outline: none;
+      }
 
-      <label for="option">Choose an option:</label>
-      <select name="option" id="option" required>
-        <option value="" disabled selected>Select an option</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-      </select>
+      input::placeholder,
+      select {
+        color: #ccc;
+      }
 
-      <button type="submit">Upload and Process</button>
-    </form>
-  </div>
-</body>
+      button {
+        background: linear-gradient(90deg, #ff0080, #ff8c00);
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+        text-transform: uppercase;
+      }
+
+      button:hover {
+        background: linear-gradient(90deg, #ff8c00, #ff0080);
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Poke Fantasia</h1>
+      <p>
+        Welcome to Poke Fantasia, your go-to platform for transforming Pokémon
+        images! This website offers three exciting functionalities: type
+        identification, type transformation, and style conversion. Try it!
+      </p>
+
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="image">Upload a pokemon image...</label>
+        <input type="file" name="image" id="image" accept="image/*" required />
+
+        <label for="option">Choose an option below...</label>
+        <select name="option" id="option" required>
+          <option value="" disabled selected>Select an option</option>
+          <option value="option1">Classify my pokemon</option>
+          <option value="option2">Transform my type</option>
+          <option value="option3">Transfer image style</option>
+        </select>
+
+        <button type="submit">Upload and Process</button>
+      </form>
+    </div>
+  </body>
 </html>
