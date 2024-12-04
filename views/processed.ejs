@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Processed Image</title>
+    <title>Processing</title>
     <style>
       * {
         margin: 0;
@@ -50,39 +50,38 @@
         margin-bottom: 2rem;
       }
 
-      img {
-        max-width: 80%;
-        height: auto;
-        border: 5px solid rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-        margin-bottom: 20px;
+      /* Spinner Styles */
+      .spinner {
+        border: 12px solid rgba(255, 255, 255, 0.3);
+        border-top: 12px solid #ff0080;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        animation: spin 1.5s linear infinite;
+        margin-bottom: 2rem;
       }
 
-      a {
-        display: inline-block;
-        margin: 10px;
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-        border-radius: 5px;
-        background: linear-gradient(90deg, #ff0080, #ff8c00);
-        transition: background 0.3s ease, transform 0.3s ease;
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
-      a:hover {
-        background: linear-gradient(90deg, #ff8c00, #ff0080);
-        transform: scale(1.05);
+      /* Optional: Additional styling for text */
+      .message {
+        font-size: 1.5rem;
+        max-width: 600px;
       }
     </style>
   </head>
   <body>
-    <h1>Your Processed Image</h1>
-    <img src="<%= imageUrl %>" alt="Processed Image" />
-    <a href="<%= imageUrl %>" download>Download Image</a>
-    <a href="/">Process Another Image</a>
+    <h1>Processing</h1>
+    <div class="spinner"></div>
+    <p class="message">
+      Your image is being processed. Please wait a moment...
+    </p>
   </body>
 </html>
