@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Processing</title>
     <style>
+      /* Existing Styles */
       * {
         margin: 0;
         padding: 0;
@@ -75,6 +76,23 @@
         font-size: 1.5rem;
         max-width: 600px;
       }
+
+      /* Result container */
+      .result {
+        display: none;
+        margin-top: 2rem;
+      }
+
+      .result img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .error-message {
+        color: #ff4d4d;
+        font-size: 1.2rem;
+        margin-top: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -83,5 +101,92 @@
     <p class="message">
       Your image is being processed. Please wait a moment...
     </p>
+
+    <!-- Container to display result -->
+    <div class="result" id="result">
+      <h2>Processing Complete!</h2>
+      <img id="resultImage" src="" alt="Processed Image" />
+      <a href="/" style="margin-top: 1rem; display: inline-block; color: #ff0080; text-decoration: none;">Return to Home Page</a>
+    </div>
+
+    <!-- Container to display error -->
+    <div class="error-message" id="errorMessage"></div>
+
+    <script>
+      // Extract jobid from the server-rendered variable
+      const jobid = "<%= jobid %>";
+
+      // Function to poll the status
+      async function pollStatus() {
+        try {
+          const response = await fetch(`/status/${jobid}`);
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+          const data = await response.json();
+
+          // Assuming the API response includes a 'status' field
+          if (data.status === 'completed') {
+            // Processing is complete
+            displayResult(data);
+          } else if (data.status === 'failed') {
+            // Processing failed
+            displayError(data.message || 'Processing failed.');
+          } else {
+            // Still processing, continue polling
+            console.log(`Job ${jobid} status: ${data.status}. Continuing to poll...`);
+            setTimeout(pollStatus, 3000); // Poll every 3 seconds
+          }
+        } catch (error) {
+          console.error('Error polling status:', error);
+          displayError('An error occurred while checking the status.');
+        }
+      }
+
+      // Function to display the result
+      function displayResult(data) {
+        const spinner = document.querySelector('.spinner');
+        const message = document.querySelector('.message');
+        const resultDiv = document.getElementById('result');
+
+        // Hide spinner and message
+        spinner.style.display = 'none';
+        message.style.display = 'none';
+
+        // Show result
+        resultDiv.style.display = 'block';
+
+        // Assuming the API returns a URL to the processed image
+        // Adjust based on actual API response
+        const resultImage = document.getElementById('resultImage');
+        if (data.resultUrl) {
+          resultImage.src = data.resultUrl;
+        } else if (data.processedData) {
+          // If the API returns base64 data
+          resultImage.src = `data:image/png;base64,${data.processedData}`;
+        } else {
+          resultImage.alt = 'No image available.';
+        }
+      }
+
+      // Function to display an error message
+      function displayError(message) {
+        const spinner = document.querySelector('.spinner');
+        const messageElem = document.querySelector('.message');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Hide spinner and message
+        spinner.style.display = 'none';
+        messageElem.style.display = 'none';
+
+        // Show error message
+        errorMessage.textContent = message;
+      }
+
+      // Start polling when the page loads
+      window.onload = () => {
+        pollStatus();
+      };
+    </script>
   </body>
 </html>

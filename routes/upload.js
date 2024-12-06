@@ -13,14 +13,14 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
   fileFilter: (req, file, cb) => {
-    // Allow only images and PDFs
-    const filetypes = /jpeg|jpg|png|pdf/;
+    // Allow only images
+    const filetypes = /jpeg|jpg/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     if (mimetype && extname) {
       return cb(null, true);
     }
-    cb(new Error("Only JPEG, PNG images and PDFs are allowed"));
+    cb(new Error("Only JPEGs are allowed"));
   },
 });
 
@@ -92,11 +92,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     // Send POST request to the API with authentication
     const response = await axios.post(apiEndpoint, payload, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${config.api.apiKey}`, // Adjust based on API's auth scheme
-        // "x-api-key": config.api.apiKey, // Uncomment and use if API expects API key in a different header
-      },
+      headers: {"Content-Type": "application/json"},
       timeout: 10000, // Set a timeout of 10 seconds
     });
 

@@ -8,6 +8,7 @@ const app = express();
 // Routes
 const indexRouter = require('./routes/index');
 const uploadRouter = require('./routes/upload');
+const statusRouter = require('./routes/status'); // Import the new status router
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -20,6 +21,12 @@ app.use(express.urlencoded({ extended: true }));
 // Use routes
 app.use('/', indexRouter);
 app.use('/upload', uploadRouter);
+app.use('/status', statusRouter); // Register the status route
+
+// Handle undefined routes
+app.use((req, res) => {
+  res.status(404).render('error', { message: 'Page not found.' });
+});
 
 // Start server
 const PORT = process.env.PORT || 3000;
