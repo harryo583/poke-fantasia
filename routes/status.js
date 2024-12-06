@@ -9,7 +9,6 @@ const axios = require("axios");
 router.get("/:jobid", async (req, res) => {
   const jobid = req.params.jobid;
 
-  // Validate jobid
   if (!jobid) {
     return res.status(400).json({ error: "Job ID is required." });
   }
