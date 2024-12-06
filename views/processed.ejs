@@ -105,7 +105,13 @@
     <!-- Container to display result -->
     <div class="result" id="result">
       <h2>Processing Complete!</h2>
+
+      <!-- Image Result -->
       <img id="resultImage" src="" alt="Processed Image" />
+
+      <!-- Text Result -->
+      <p id="resultText" class="result-text"></p>
+
       <a href="/" style="margin-top: 1rem; display: inline-block; color: #ff0080; text-decoration: none;">Return to Home Page</a>
     </div>
 
@@ -138,9 +144,11 @@
 
       // Function to display the result
       function displayResult(data) {
+        console.log("Displaying Result:", data);
         const spinner = document.querySelector('.spinner');
         const message = document.querySelector('.message');
         const resultDiv = document.getElementById('result');
+        const resultText = document.getElementById('resultText');
 
         // Hide spinner and message
         spinner.style.display = 'none';
@@ -151,13 +159,21 @@
 
         // Assuming the API returns a URL to the processed image
         const resultImage = document.getElementById('resultImage');
-        if (data.resultUrl) {
-          resultImage.src = data.resultUrl;
-        } else if (data.processedData) {
-          // If the API returns base64 data
-          resultImage.src = `data:image/png;base64,${data.processedData}`;
+
+        if (data.image) {
+          resultImage.src = `data:image/png;base64,${data.image}`;
+          resultImage.style.display = 'block';
+          console.log("Result Image set to:", data.image);
         } else {
-          resultImage.alt = 'No image available.';
+          resultImage.style.display = 'none';
+        }
+
+        if (data.text) {
+          resultText.textContent = data.text;
+          resultText.style.display = 'block';
+          console.log("Result Text set to:", data.text);
+        } else {
+          resultText.style.display = 'none';
         }
       }
 
