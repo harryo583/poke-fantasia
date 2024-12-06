@@ -12,7 +12,9 @@ Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pok
 2. **Pokemon Transformation**  
 
     <br>
+
     <img src="assets/transform.png" alt="transform" width="750">
+
     <br>
 
    - Transform your Pokémon into any other type you want!  
@@ -22,7 +24,9 @@ Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pok
 3. **Pokemon Image Style Transfer** 
 
     <br>
+
     <img src="assets/transfer.png" alt="transfer" width="750">
+    
     <br>
 
    - Upload an image of your Pokémon and apply a completely new artistic style to it.  
