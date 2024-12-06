@@ -1,5 +1,9 @@
 # Poke Fantasia 🌟
 
+<br>
+<img src="assets/website.png" alt="transform" width="750">
+<br>
+
 Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pokémon! This interactive platform combines functionality, fun, and Pokémon nostalgia to create a seamless user experience.
 
 ## Features & Functionalities
