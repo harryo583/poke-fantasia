@@ -27,7 +27,7 @@
         background-size: 400% 400%;
         animation: gradientBackground 15s ease infinite;
         color: #fff;
-        overflow: auto;
+        overflow: hidden; /* Prevent scrolling */
         padding: 20px;
       }
 
@@ -44,22 +44,23 @@
       }
 
       h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: bold;
         text-transform: uppercase;
         text-shadow: 0 0 20px #ff0080, 0 0 30px #ff0080;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
+        transition: font-size 0.5s ease;
       }
 
       /* Spinner Styles */
       .spinner {
-        border: 12px solid rgba(255, 255, 255, 0.3);
-        border-top: 12px solid #ff0080;
+        border: 8px solid rgba(255, 255, 255, 0.3);
+        border-top: 8px solid #ff0080;
         border-radius: 50%;
-        width: 80px;
-        height: 80px;
+        width: 60px;
+        height: 60px;
         animation: spin 1.5s linear infinite;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
       }
 
       @keyframes spin {
@@ -73,25 +74,127 @@
 
       /* Optional: Additional styling for text */
       .message {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         max-width: 600px;
+        margin-bottom: 1.5rem;
       }
 
       /* Result container */
       .result {
         display: none;
         margin-top: 2rem;
+        width: 100%;
+        max-width: 90vw;
       }
 
       .result img {
-        max-width: 100%;
+        width: 100%;
         height: auto;
+        max-width: 100%;
+        max-height: 60vh;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        object-fit: contain;
+      }
+
+      .result-text {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #ff8c00;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px 16px;
+        border-radius: 5px;
+        display: inline-block;
+        word-wrap: break-word;
       }
 
       .error-message {
         color: #ff4d4d;
         font-size: 1.2rem;
         margin-top: 1rem;
+      }
+
+      /* Button Container */
+      .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 2rem;
+      }
+
+      /* Button Styles */
+      .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #ff0080;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn:hover {
+        background-color: #e60073;
+        transform: translateY(-2px);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-download {
+        background-color: #9c10c7;
+      }
+
+      .btn-download:hover {
+        background-color: #7106b9;
+      }
+
+      .btn-try {
+        background-color: #056cda;
+      }
+
+      .btn-try:hover {
+        background-color: #074a92;
+      }
+
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        .spinner {
+          width: 50px;
+          height: 50px;
+          border-width: 6px;
+        }
+
+        .message {
+          font-size: 1rem;
+        }
+
+        .result-text {
+          font-size: 1rem;
+          padding: 6px 12px;
+        }
+
+        .button-container {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .btn {
+          width: 100%;
+          max-width: 300px;
+        }
       }
     </style>
   </head>
@@ -104,7 +207,7 @@
 
     <!-- Container to display result -->
     <div class="result" id="result">
-      <h2>Processing Complete!</h2>
+      <!-- Removed h2 as we'll update the main h1 instead -->
 
       <!-- Image Result -->
       <img id="resultImage" src="" alt="Processed Image" />
@@ -112,7 +215,18 @@
       <!-- Text Result -->
       <p id="resultText" class="result-text"></p>
 
-      <a href="/" style="margin-top: 1rem; display: inline-block; color: #ff0080; text-decoration: none;">Return to Home Page</a>
+      <!-- Button Container -->
+      <div class="button-container">
+        <!-- Download Button -->
+        <a id="downloadButton" class="btn btn-download" href="#" download="processed_image.png">
+          Download
+        </a>
+
+        <!-- Try Another Button -->
+        <a href="/" class="btn btn-try">
+          Try Another
+        </a>
+      </div>
     </div>
 
     <!-- Container to display error -->
@@ -149,23 +263,32 @@
         const message = document.querySelector('.message');
         const resultDiv = document.getElementById('result');
         const resultText = document.getElementById('resultText');
+        const mainTitle = document.querySelector('h1');
+        const downloadButton = document.getElementById('downloadButton');
 
         // Hide spinner and message
         spinner.style.display = 'none';
         message.style.display = 'none';
 
+        // Update the main title
+        mainTitle.textContent = 'Processing Complete!';
+
         // Show result
         resultDiv.style.display = 'block';
 
-        // Assuming the API returns a URL to the processed image
+        // Assuming the API returns a base64-encoded image string
         const resultImage = document.getElementById('resultImage');
 
         if (data.image) {
           resultImage.src = `data:image/png;base64,${data.image}`;
           resultImage.style.display = 'block';
           console.log("Result Image set to:", data.image);
+
+          downloadButton.href = resultImage.src;
+          downloadButton.download = "processed_image.png";
         } else {
           resultImage.style.display = 'none';
+          downloadButton.style.display = 'none';
         }
 
         if (data.text) {
