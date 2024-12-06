@@ -9,25 +9,22 @@ Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pok
    - Upload a picture of any Pokémon, and the website will identify its type (e.g. Grass, Fire, Dragon) using advanced image classification algorithms.
    - This feature is perfect for trainers looking to quickly discover or confirm Pokémon types based on visuals.
 
-2. **Pokemon Transformation**
-
-<div style="text-align: center;">
+2. **Pokemon Transformation**  
+   <center>
        <img src="assets/transform.png" alt="transform" width="600">
-   </div>
+   </center>  
+   - Transform your Pokémon into any other type you want!  
+   - For example, turn a Water-type Pokémon into a Fire-type, or a Psychic-type into a Dragon-type, just for fun or creative exploration.
+   - The transformed Pokémon's appearance will adjust to reflect the new type, offering a glimpse of imaginative type redesigns.
 
-- Transform your Pokémon into any other type you want!
-- For example, turn a Water-type Pokémon into a Fire-type, or a Psychic-type into a Dragon-type, just for fun or creative exploration.
-- The transformed Pokémon's appearance will adjust to reflect the new type, offering a glimpse of imaginative type redesigns.
-
-3. **Pokemon Image Style Transfer**
-
-   <div style="text-align: center;">
+3. **Pokemon Image Style Transfer**  
+   <center>
        <img src="assets/transfer.png" alt="transfer" width="600">
-   </div>
-
-   - Upload an image of your Pokémon and apply a completely new artistic style to it.
-   - Choose from styles like comic book, abstract art, watercolor, and more.
+   </center>  
+   - Upload an image of your Pokémon and apply a completely new artistic style to it.  
+   - Choose from styles like comic book, abstract art, watercolor, and more.  
    - Watch as your Pokémon transforms into a stunning piece of artwork with the selected visual style, great for creating unique fan art or profile pictures!
+
 
 ## Project Structure
 
