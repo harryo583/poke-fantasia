@@ -85,10 +85,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     console.log("Sending request to API:");
     console.log("Endpoint:", apiEndpoint);
     console.log("Payload:", payload);
-    console.log("Headers:", {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${config.api.apiKey}`,
-    });
+    console.log("Headers:", {"Content-Type": "application/json"});
 
     // Send POST request to the API with authentication
     const response = await axios.post(apiEndpoint, payload, {

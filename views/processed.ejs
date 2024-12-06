@@ -120,22 +120,15 @@
       async function pollStatus() {
         try {
           const response = await fetch(`/status/${jobid}`);
-          if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-          }
           const data = await response.json();
 
-          // Assuming the API response includes a 'status' field
-          if (data.status === 'completed') {
-            // Processing is complete
+          if (response.status === 200 && data.status !== 'processing') { // Processing is complete
             displayResult(data);
-          } else if (data.status === 'failed') {
-            // Processing failed
-            displayError(data.message || 'Processing failed.');
-          } else {
-            // Still processing, continue polling
-            console.log(`Job ${jobid} status: ${data.status}. Continuing to poll...`);
+          } else if (data.status === 'processing') { // Still processing, continue polling
+            console.log(`Job ${jobid} status: ${data.message}. Continuing to poll...`);
             setTimeout(pollStatus, 3000); // Poll every 3 seconds
+          } else { // Processing failed or unexpected status
+            displayError(data.error || 'Processing failed.');
           }
         } catch (error) {
           console.error('Error polling status:', error);
@@ -157,7 +150,6 @@
         resultDiv.style.display = 'block';
 
         // Assuming the API returns a URL to the processed image
-        // Adjust based on actual API response
         const resultImage = document.getElementById('resultImage');
         if (data.resultUrl) {
           resultImage.src = data.resultUrl;
