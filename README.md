@@ -11,7 +11,9 @@ Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pok
 
 2. **Pokemon Transformation**  
 
+
    <img src="assets/transform.png" alt="transform" width="750">
+
 
    - Transform your Pokémon into any other type you want!  
    - For example, turn a Water-type Pokémon into a Fire-type, or a Psychic-type into a Dragon-type, just for fun or creative exploration.
@@ -19,7 +21,9 @@ Welcome to **Poke Fantasia** – your ultimate online portal to the world of Pok
 
 3. **Pokemon Image Style Transfer** 
 
+
      <img src="assets/transfer.png" alt="transfer" width="750">
+
 
    - Upload an image of your Pokémon and apply a completely new artistic style to it.  
    - Choose from styles like comic book, abstract art, watercolor, and more.  
