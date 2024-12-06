@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 const config = require("../config/config");
-const axios = require("axios"); // Import axios for HTTP requests
+const axios = require("axios");
 
 // Configure Multer storage
 const storage = multer.memoryStorage();
@@ -16,9 +16,7 @@ const upload = multer({
     // Allow only images and PDFs
     const filetypes = /jpeg|jpg|png|pdf/;
     const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     if (mimetype && extname) {
       return cb(null, true);
     }
@@ -31,6 +29,7 @@ router.post("/", upload.single("image"), async (req, res) => {
   const { option, target_type, target_format } = req.body;
   const image = req.file;
 
+  // Validate required fields
   if (!image || !option) {
     return res.status(400).render("error", {
       message: "Image and option are required.",
@@ -41,50 +40,69 @@ router.post("/", upload.single("image"), async (req, res) => {
     // Encode the file buffer to Base64
     const dataStr = image.buffer.toString("base64");
 
-    // Prepare the JSON payload based on the option
-    const payload = {
-      filename: image.originalname,
-      data: dataStr,
-    };
-
+    // Determine the action based on the selected option
+    let action;
     if (option === "classify") {
-      payload.action = "typeid";
-    }
-
-    if (option === "transform") {
-      payload.action = "typecov";
+      action = "typeid";
+    } else if (option === "transform") {
+      action = "typecov";
       if (!target_type) {
         return res.status(400).render("error", {
           message: "target_type is required for transform option.",
         });
       }
-      payload.target_type = target_type;
-    }
-
-    if (option === "transfer") {
-      payload.action = "formatcov";
+    } else if (option === "transfer") {
+      action = "formatcov";
       if (!target_format) {
         return res.status(400).render("error", {
           message: "target_format is required for transfer option.",
         });
       }
+    } else {
+      return res.status(400).render("error", {
+        message: "Invalid option selected.",
+      });
+    }
+
+    // Construct the API endpoint
+    const apiEndpoint = `${config.api.baseurl}/jpg/${action}/80001`;
+
+    // Prepare the JSON payload
+    const payload = {
+      filename: image.originalname,
+      data: dataStr,
+    };
+
+    if (option === "transform") {
+      payload.target_type = target_type;
+    }
+
+    if (option === "transfer") {
       payload.target_format = target_format;
     }
 
-    // Define the API endpoint
-    const apiEndpoint = config.api.endpoint;
+    // Log the request details for debugging
+    console.log("Sending request to API:");
+    console.log("Endpoint:", apiEndpoint);
+    console.log("Payload:", payload);
+    console.log("Headers:", {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${config.api.apiKey}`,
+    });
 
-    // Send POST request to the API
+    // Send POST request to the API with authentication
     const response = await axios.post(apiEndpoint, payload, {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${config.api.apiKey}`, // Adjust based on API's auth scheme
+        // "x-api-key": config.api.apiKey, // Uncomment and use if API expects API key in a different header
       },
-      timeout: 10000, // set a timeout of 10 seconds
+      timeout: 10000, // Set a timeout of 10 seconds
     });
 
     // Handle the response
     if (response.status === 200) {
-      const jobid = response.data.jobid || response.data; // adjust based on API response structure
+      const jobid = response.data.jobid || response.data; // Adjust based on API response structure
       console.log("Processing started, job id =", jobid);
 
       // Render the processing page
@@ -92,55 +110,32 @@ router.post("/", upload.single("image"), async (req, res) => {
         message: "Processing",
         jobid: jobid,
       });
-    } else if (response.status === 400) {
-      const body = response.data;
-      console.error("Error: Bad Request", body);
-      res.status(400).render("error", {
-        message: body.message || "Bad Request.",
-      });
     } else {
-      console.error("Failed with status code:", response.status);
-      if (response.status === 500) {
-        const body = response.data;
-        console.error(
-          "Error message:",
-          body.message || "Internal Server Error."
-        );
-        res.status(500).render("error", {
-          message: body.message || "An internal server error occurred.",
-        });
-      } else {
-        res.status(response.status).render("error", {
-          message: `Failed with status code: ${response.status}`,
-        });
-      }
+      console.error("Unexpected response status:", response.status);
+      res.status(response.status).render("error", {
+        message: `Unexpected response status: ${response.status}`,
+      });
     }
   } catch (error) {
     console.error("Error processing upload:", error);
 
-    // Check if the error is from the API response
+    // Enhanced error handling
     if (error.response) {
-      const { status, data } = error.response;
-      if (status === 400) {
-        res.status(400).render("error", {
-          message: data.message || "Bad Request.",
-        });
-      } else if (status === 500) {
-        res.status(500).render("error", {
-          message: data.message || "Internal Server Error.",
-        });
-      } else {
-        res.status(status).render("error", {
-          message: data.message || `Failed with status code: ${status}`,
-        });
-      }
+      // The request was made and the server responded with a status code outside the 2xx range
+      console.error("API Response Status:", error.response.status);
+      console.error("API Response Data:", error.response.data);
+      res.status(error.response.status).render("error", {
+        message: error.response.data.message || "An error occurred with the API.",
+      });
     } else if (error.request) {
       // The request was made but no response was received
+      console.error("No response received from the API.");
       res.status(500).render("error", {
-        message: "No response received from the server.",
+        message: "No response received from the API.",
       });
     } else {
       // Something happened in setting up the request
+      console.error("Error setting up the request:", error.message);
       res.status(500).render("error", {
         message: "An error occurred while setting up the request.",
       });

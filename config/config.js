@@ -31,6 +31,6 @@ module.exports = {
     region: "us-east-2",
   },
   api: {
-    endpoint: "https://wjn8x8icte.execute-api.us-east-2.amazonaws.com/prod"
+    baseurl: "https://wjn8x8icte.execute-api.us-east-2.amazonaws.com/prod"
   }
 };
