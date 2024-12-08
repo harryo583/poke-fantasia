@@ -219,7 +219,7 @@
       <!-- Button Container -->
       <div class="button-container">
         <!-- Download Button -->
-        <a id="downloadButton" class="btn btn-download" href="#" download="processed_image.png">
+        <a id="downloadButton" class="btn btn-download" href="#" download="processed_image.jpg">
           Download
         </a>
 
@@ -281,19 +281,19 @@
         const resultImage = document.getElementById('resultImage');
 
         if (data.image) {
-          resultImage.src = `data:image/png;base64,${data.image}`;
+          resultImage.src = `data:image/jpg;base64,${data.image}`;
           resultImage.style.display = 'block';
           console.log("Result Image set to:", data.image);
 
           downloadButton.href = resultImage.src;
-          downloadButton.download = "processed_image.png";
+          downloadButton.download = "processed_image.jpg";
         } else {
           resultImage.style.display = 'none';
           downloadButton.style.display = 'none';
         }
 
         if (data.text) {
-          resultText.textContent = data.text;
+          resultText.textContent = JSON.parse(atob(data.text)).predicted_type;
           resultText.style.display = 'block';
           console.log("Result Text set to:", data.text);
         } else {
